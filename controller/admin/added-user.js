@@ -1,17 +1,18 @@
 const userModel = require('../../models/register')
 
 
-exports.userAdded = (req,res)=>{
-  userModel.findAll({
-    where:{
-        role:'user'
-    }
-  }).then(users=>{
-    req.session.save(()=>{
-        res.render('admin/view-user',{Users:users})
-    })
-  }) .catch(err=>console.log(err))
-}
+// exports.userAdded = (req,res)=>{
+//     let errors = req.flash('errors')
+//   userModel.findAll({
+//     where:{
+//         role:'user'
+//     }
+//   }).then(users=>{
+//     req.session.save(()=>{
+//         res.render('admin/view-user',{Users:users,errorses: errors })
+//     })
+//   }) .catch(err=>console.log(err))
+// }
 exports.deleteUser= (req,res)=>{
     const{id}= req.body
    userModel.findAll({

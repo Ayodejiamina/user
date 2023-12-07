@@ -6,14 +6,16 @@ const { check} = require('express-validator/check');
 const isLoggedIn = require('../middlewares/isLoggedIn');
 
 
-router.get('/register',authController.getRegister)
-router.post('/register',[
-    check('name').notEmpty().withMessage('Your name is required'),
-    check('phone').notEmpty().withMessage('Your contact is required').isLength({max:11}).withMessage('invalid phone number'),
-    check('email').notEmpty().withMessage('Your email is required').isEmail().withMessage('Invalid email').normalizeEmail(),
-    check('password').notEmpty().withMessage('Password is required').isAlphanumeric().withMessage('Your password must contain both alphabet and numbers').isLength({ min: 6 }).withMessage('Your password lenth must be greater than 6 characters'),
-],
-authController.postRegister)
+// router.get('/register',authController.getRegister)
+router.get('/add-user',authController.userAdded)
+router.post('/add-user',authController.postRegister)
+// router.post('/add-user',[
+//     check('name').notEmpty().withMessage('Your name is required'),
+//     check('phone').notEmpty().withMessage('Your contact is required').isLength({max:11}).withMessage('invalid phone number'),
+//     check('email').notEmpty().withMessage('Your email is required').isEmail().withMessage('Invalid email').normalizeEmail(),
+//     check('password').notEmpty().withMessage('Password is required').isAlphanumeric().withMessage('Your password must contain both alphabet and numbers').isLength({ min: 6 }).withMessage('Your password lenth must be greater than 6 characters'),
+// ],
+// authController.postRegister)
 router.get('/login',authController.getLogin)
 router.post('/login',[
     check('email').notEmpty().withMessage('email is required').trim(),

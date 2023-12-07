@@ -17,6 +17,7 @@ const SequelizeStore = require("connect-session-sequelize")(expressSession.Store
 const app = express()
 app.use(flash())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(expressSession({
     secret: 'my user profile',
@@ -58,7 +59,7 @@ app.use((req, res, next) => {
 
 // products.sync({alter:true})
 sequelize.sync().then(result => {
-    app.listen(3000)
+    app.listen(3001)
 }).catch(err => {
     console.log(err)
 })

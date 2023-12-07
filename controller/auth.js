@@ -13,61 +13,81 @@ exports.dashboard = (req, res) => {
   res.render('admin/dashboard', { title: "dashboard", username:username })
 }
 
-exports.getRegister = (req, res) => {
-  let errors = req.flash('errors')
-  res.render('auth/registration', { title: 'Register', errorses: errors })
+// exports.userAdded = (req, res) => {
+//   let errors = req.flash('errors')
+//   res.render('admin/view-user', { title: 'Register', errorses: errors,modalOpen:true })
+// }
+exports.userAdded = (req, res) => {
+
+  res.render('admin/view-user', { title: 'Register'})
 }
-exports.postRegister = (req, res) => {
-  const { name, role, email, phone, password } = req.body
-  let errors = validationResult(req)
-  console.log(errors)
-  if (!errors.isEmpty()) {
-    req.flash('errors', errors.array())
-    req.session.save(() => {
-      res.redirect('/register')
-    })
+ 
+exports.postRegister = (req,res)=>{
+//  return res.status(200).json('submitted')
+ RegModel.create(alldata).then(result=>{
+  if(result){
+    res.redirect('/login')
   }
-  else {
-    bcrypt.hash(password, 12).then(hashedPassword => {
-      RegModel.create({
-        name: name,
-        role: 'user',
-        email: email,
-        phone: phone,
-        password: hashedPassword
-      }).then(result => {
-        res.redirect('/login')
-        const email = {
-          to: [result.email, 'ayomide@gmail.com'],
-          from: {
-            name: 'Amin Mart',
-            email: 'aminat@gmail.com'
-          },
-          subject: 'Welcome to Amin Mart Shopping',
-          html: `
-       <h2>Welcome ${result.email}</h2>
-      `
-        }
-
-        var transport = nodemailer.createTransport({
-          host: "sandbox.smtp.mailtrap.io",
-          port: 2525,
-          auth: {
-            user: "d35dde509992f8",
-            pass: "a71f3840f520c5"
-          }
-        });
-        transport.sendMail(email).then(resp => {
-
-          return res.redirect('/login')
-
-        }).catch(err => { console.log(err) })
-
-      }).catch(err => { console.log(err) })
-    }).catch(err => { console.log(err) })
-
-  }
+ })
 }
+// exports.postRegister = (req, res) => {
+  
+//   const { name, role, email, phone, password } = req.body
+
+
+
+
+
+
+//   // let errors = validationResult(req)
+//   // console.log(errors)
+//   // if (!errors.isEmpty()) {
+//   //   req.flash('errors', errors.array())
+//   //   req.session.save(() => {
+//   //     res.redirect('/add-user')
+//   //   })
+//   // }
+//   // else {
+//   //   bcrypt.hash(password, 12).then(hashedPassword => {
+//   //     RegModel.create({
+//   //       name: name,
+//   //       role: 'user',
+//   //       email: email,
+//   //       phone: phone,
+//   //       password: hashedPassword
+//   //     }).then(result => {
+//   //       res.render('auth/login')
+//   //       const email = {
+//   //         to: [result.email, 'ayomide@gmail.com'],
+//   //         from: {
+//   //           name: 'Amin Mart',
+//   //           email: 'aminat@gmail.com'
+//   //         },
+//   //         subject: 'Welcome to Amin Mart Shopping',
+//   //         html: `
+//   //      <h2>Welcome ${result.email}</h2>
+//   //     `
+//   //       }
+
+//   //       var transport = nodemailer.createTransport({
+//   //         host: "sandbox.smtp.mailtrap.io",
+//   //         port: 2525,
+//   //         auth: {
+//   //           user: "d35dde509992f8",
+//   //           pass: "a71f3840f520c5"
+//   //         }
+//   //       });
+//   //       transport.sendMail(email).then(resp => {
+
+//   //         return res.redirect('/login')
+
+//   //       }).catch(err => { console.log(err) })
+
+//   //     }).catch(err => { console.log(err) })
+//   //   }).catch(err => { console.log(err) })
+
+//   // }
+// }
 exports.getLogin = (req, res) => {
   let myError = req.flash('errors')
   let allErrors = req.flash('allErr')
